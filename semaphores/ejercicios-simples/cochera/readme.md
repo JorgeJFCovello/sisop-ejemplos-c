@@ -1,0 +1,1 @@
+Sea una cochera con 20 lugares disponibles, y sabiendo que no hay ningún auto y una sola puerta de acceso con un ancho máximo de hasta 1 (un) auto, sincroniza las entradas y salidas de los autos utilizando la cantidad mínima de semáforos.
