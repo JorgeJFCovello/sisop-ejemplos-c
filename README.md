@@ -1,1 +1,0 @@
-# sisop-ejemplos-c
