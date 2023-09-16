@@ -78,6 +78,7 @@ int main(int argc, char** argv) {
 
     int id = 1;
     while(1){
+        sleep(1);
         pthread_t hilo_cliente;
         pthread_create(&hilo_cliente, NULL, (void*) cliente, (void*)id);
         pthread_detach(hilo_cliente);
@@ -114,6 +115,7 @@ void cliente(int id) {
 
 void atenderReservas(void* args){
     while(1){
+        sleep(1);
         sem_wait(&reservasListas);
         pthread_mutex_lock(&mx_reservas);
         struct t_libro* libro = tomar(reservas);
@@ -126,6 +128,7 @@ void atenderReservas(void* args){
 }
 void atenderDevoluciones(void* args){
     while(1){
+        sleep(1);
         sem_wait(&devolucionesListas);
         pthread_mutex_lock(&mx_devoluciones);
         struct t_libro* libro = tomar(devoluciones);
@@ -148,7 +151,7 @@ struct t_libro* tomar(t_list* list){
 }
 void retirar(t_list* list, int id){
     int find_by_id(struct t_libro* libro) {
-        return libro->id==libro;
+        return libro->id == id;
     } 
     list_remove_by_condition(list, (void*)find_by_id);
 }
@@ -174,5 +177,5 @@ struct t_libro* elegirLibro(){
 }
 
 void registrarDisponible(struct t_libro* libro){
-    printf("Registre el libro %d como disponible!", libro->id);
+    printf("Registre el libro %d como disponible! \n", libro->id);
 }
