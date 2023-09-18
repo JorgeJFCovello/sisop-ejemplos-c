@@ -13,13 +13,13 @@ void imprimir_mensaje_con_mas_tiempo (int nro_msg){
 }
 void crear_hilos () {
     pthread_t * primer_hilo = malloc(sizeof(pthread_t));
-    pthread_create(primer_hilo, NULL, imprimir_mensaje_con_mas_tiempo, 1);
+    pthread_create(primer_hilo, NULL, (void*)imprimir_mensaje_con_mas_tiempo, (void*) 1);
     pthread_t * segundo_hilo = malloc(sizeof(pthread_t));
-    pthread_create(segundo_hilo, NULL, imprimir_mensaje, 2);
+    pthread_create(segundo_hilo, NULL, (void*)imprimir_mensaje, (void*) 2);
     pthread_t * tercer_hilo = malloc(sizeof(pthread_t));
-    pthread_create(tercer_hilo, NULL, imprimir_mensaje, 3);
+    pthread_create(tercer_hilo, NULL, (void*)imprimir_mensaje, (void*) 3);
     pthread_t * cuarto_hilo = malloc(sizeof(pthread_t));
-    pthread_create(cuarto_hilo, NULL, imprimir_mensaje, 4);
+    pthread_create(cuarto_hilo, NULL, (void*)imprimir_mensaje, (void*) 4);
     pthread_join(*primer_hilo,NULL);
     printf("Use un join :O!\n");
     pthread_detach(*segundo_hilo);
