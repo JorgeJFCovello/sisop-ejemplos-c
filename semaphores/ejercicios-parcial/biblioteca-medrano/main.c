@@ -28,7 +28,7 @@ t_list* retiros;
 struct t_libro* titulos[5];
 void atenderReservas(void* args);
 void atenderDevoluciones(void* args);
-void cliente(int args);
+void cliente(void* args);
 struct t_libro* elegirLibro(void);
 void estudiar();
 void festejar();
@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
     while(1){
         sleep(1);
         pthread_t hilo_cliente;
-        pthread_create(&hilo_cliente, NULL, (void*) cliente, (void*)id);
+        pthread_create(&hilo_cliente, NULL, (void*) cliente, id);
         pthread_detach(hilo_cliente);
         id++;
     }
@@ -88,7 +88,7 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-void cliente(int id) {
+void cliente(void* id) {
     printf("Llega un nuevo cliente \n");
     struct t_libro* libro = elegirLibro();
     printf("El cliente %d eligio el libro %d \n", id, libro->id);
