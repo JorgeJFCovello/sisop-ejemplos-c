@@ -6,19 +6,20 @@
 #include <unistd.h>
 #include <time.h>
 #include <commons/collections/list.h>
+#include <commons/collections/queue.h>
 #include <commons/string.h>
 
 
 int CANTIDAD_PRODUCTORES = 5;
 int CANTIDAD_RECURSOS = 5;
-int CANTIDAD_CONSUMIDORES = 2;
+int CANTIDAD_CONSUMIDORES = 8;
 
 pthread_mutex_t mx_cola;
 pthread_mutex_t mx_recursos_disponibles;
 pthread_mutex_t mx_por_recurso[5];
 pthread_mutex_t mx_solicitud_recurso;
 
-t_list* cola;
+t_queue* cola;
 t_list* recursos_disponibles;
 
 sem_t productor_consumidor;
@@ -29,7 +30,7 @@ void* usar_recurso(int id);
 int pedir_recurso(void);
 
 int main(int argc, char** argv) {
-    cola = list_create();
+    cola = queue_create();
     recursos_disponibles = list_create();
     for(int i = 0; i < CANTIDAD_RECURSOS; i++){
         void* recurso = malloc(sizeof(char)*10);
@@ -69,7 +70,7 @@ int main(int argc, char** argv) {
     }
 
     while(1){
-        printf("Elementos en la cola: %d\n", cola->elements_count);
+        printf("Elementos en la cola: %d\n", queue_size(cola));
         sleep(2);
     }
 
@@ -80,7 +81,7 @@ void consumidor(int* id) {
     while(1){
         sem_wait(&productor_consumidor);
         pthread_mutex_lock(&mx_cola);
-        void* resultado = list_get(cola,0);
+        void* resultado = queue_pop(cola);
         pthread_mutex_unlock(&mx_cola);
         printf("Consumidor %d: %s\n", *id, resultado);
         sleep(1);
@@ -96,7 +97,7 @@ void productor(int* id) {
         pthread_mutex_unlock(&mx_por_recurso[id_recurso]);
         printf("Productor %d: %s\n", *id, resultado);
         pthread_mutex_lock(&mx_cola);
-        list_add(cola, resultado);
+        queue_push(cola, resultado);
         pthread_mutex_unlock(&mx_cola);
         sem_post(&productor_consumidor);
         sleep(1);
