@@ -7,33 +7,33 @@ int contador = 0;
 int cantidad_sumadores = 1;
 int cantidad_duplicadores = 1;
 
-void sumar (int id){
+void sumar (int* id){
     while(1){
         contador++;
-        printf("Sumador %d: contador = %d\n", id, contador);
+        printf("Sumador %d: contador = %d\n", *id, contador);
         sleep(2);
     }
 }
-void multiplicar (int id){
+void multiplicar (int* id){
     while(1){
         contador *= 2;
-        printf("Multiplicador %d: contador = %d\n", id, contador);
+        printf("Multiplicador %d: contador = %d\n", *id, contador);
         sleep(2);
     }
 }
 
-void dividir (int id){
+void dividir (int* id){
     while(1){
         contador /= 2;
-        printf("Divisor %d: contador = %d\n", id, contador);
+        printf("Divisor %d: contador = %d\n", *id, contador);
         sleep(2);
     }
 }
 
-void restar (int id){
+void restar (int* id){
     while(1){
         contador--;
-        printf("Resta %d: contador = %d\n", id, contador);
+        printf("Resta %d: contador = %d\n", *id, contador);
         sleep(4);
     }
 }
