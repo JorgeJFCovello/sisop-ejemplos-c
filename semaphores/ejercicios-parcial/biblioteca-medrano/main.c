@@ -28,7 +28,7 @@ t_list* retiros;
 struct t_libro* titulos[5];
 void atenderReservas(void* args);
 void atenderDevoluciones(void* args);
-void cliente(void* args);
+void cliente(int* id);
 struct t_libro* elegirLibro(void);
 void estudiar();
 void festejar();
@@ -76,36 +76,37 @@ int main(int argc, char** argv) {
     pthread_detach(hilo_devoluciones1);
     pthread_detach(hilo_devoluciones2);
 
-    int id = 1;
+    int* id = malloc(sizeof(int));
+    *id=1;
     while(1){
         sleep(1);
         pthread_t hilo_cliente;
         pthread_create(&hilo_cliente, NULL, (void*) cliente, id);
         pthread_detach(hilo_cliente);
-        id++;
+        *id+=1;
     }
 
     return 0;
 }
 
-void cliente(void* id) {
+void cliente(int* id) {
     printf("Llega un nuevo cliente \n");
     struct t_libro* libro = elegirLibro();
-    printf("El cliente %d eligio el libro %d \n", id, libro->id);
+    printf("El cliente %d eligio el libro %d \n", *id, libro->id);
     sem_wait(&copiasListas[libro->id]);
     pthread_mutex_lock(&mx_reservas);
     agregar(reservas, libro);
     pthread_mutex_unlock(&mx_reservas);
     sem_post(&reservasListas);
-    printf("El cliente %d fue a la bliblioteca \n", id);
+    printf("El cliente %d fue a la bliblioteca \n", *id);
     irABiblioteca();
     sem_wait(&retirosListos);
     pthread_mutex_lock(&mx_retiros);
     retirar(retiros, libro->id);
     pthread_mutex_unlock(&mx_retiros);
-    printf("El cliente %d esta estudiando \n", id);
+    printf("El cliente %d esta estudiando \n", *id);
     estudiar();
-    printf("El cliente %d fue a devolver a la biblioteca \n", id);
+    printf("El cliente %d fue a devolver a la biblioteca \n", *id);
     irABiblioteca();
     pthread_mutex_lock(&mx_devoluciones);
     agregar(devoluciones, libro);
