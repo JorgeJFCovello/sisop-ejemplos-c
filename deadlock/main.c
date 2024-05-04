@@ -19,7 +19,7 @@ sem_t finalizar;
 pthread_mutex_t mutex;
 int main(int argc, char** argv) {
     //// Recursos
-    pthread_mutex_init(&mutex, NULL);
+    // pthread_mutex_init(&mutex, NULL); //Solucion punto B de la guia
     sem_init(&recurso_a,0,1);
     sem_init(&recurso_b,0,1);
     sem_init(&finalizar,0,0);
@@ -60,7 +60,7 @@ void usarRecursosA(){
 // [ABC]
 // [BCA]
 void usarRecursosB(){
-    pthread_mutex_lock(&mutex);
+    // pthread_mutex_lock(&mutex);
     printf("Recursos solicitados B\n");
     sem_wait(&recurso_b);
     sem_wait(&recurso_a);
@@ -69,5 +69,5 @@ void usarRecursosB(){
     sem_post(&recurso_b);
     sem_post(&recurso_a);
     sem_post(&finalizar);
-    pthread_mutex_unlock(&mutex);
+    // pthread_mutex_unlock(&mutex);
 }
